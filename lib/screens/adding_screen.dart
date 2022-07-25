@@ -1,26 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:todoapp/components/todo_path.dart';
 import 'package:todoapp/theme.dart';
 import 'package:todoapp/models/models.dart';
 import '../providers/providers.dart';
 
-class NoteScreen extends StatefulWidget {
-  const NoteScreen({Key? key}) : super(key: key);
+class AddingScreen extends StatefulWidget {
+  const AddingScreen({Key? key}) : super(key: key);
 
   static MaterialPage page() {
     return MaterialPage(
-      child: const NoteScreen(),
+      child: const AddingScreen(),
       name: TodoPages.item,
       key: ValueKey(TodoPages.item),
     );
   }
 
   @override
-  State<NoteScreen> createState() => _NoteScreenState();
+  State<AddingScreen> createState() => _AddingScreenState();
 }
 
-class _NoteScreenState extends State<NoteScreen> {
+class _AddingScreenState extends State<AddingScreen> {
   final _title = TextEditingController();
   final _description = TextEditingController();
   final _textInside = TextEditingController();
@@ -49,7 +50,6 @@ class _NoteScreenState extends State<NoteScreen> {
                 int color = Provider.of<TaskManager>(context, listen: false)
                     .getColor
                     .value;
-                // String getColor = getColor(_color);
                 Provider.of<TaskManager>(context, listen: false).addTask(
                   Task(
                     title: _title.text,
@@ -61,8 +61,7 @@ class _NoteScreenState extends State<NoteScreen> {
                 );
                 // ignore: use_build_context_synchronously
                 Provider.of<TaskManager>(context, listen: false).setDefault();
-                Provider.of<AppStateManager>(context, listen: false)
-                    .gotoNoteScreen(false);
+                context.goNamed(TodoPages.home, params: {'tab': 'list'});
               },
               icon: const Icon(Icons.check)),
           const SizedBox(width: 10),
@@ -188,8 +187,7 @@ class _NoteScreenState extends State<NoteScreen> {
       bottom: 25.0,
       right: 15.0,
       child: InkWell(
-        onTap: () => Provider.of<AppStateManager>(context, listen: false)
-            .gotoNoteScreen(false),
+        onTap: () => context.goNamed(TodoPages.home, params: {'tab': 'list'}),
         child: Container(
           width: 60,
           height: 60,

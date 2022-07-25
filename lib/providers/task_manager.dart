@@ -137,4 +137,15 @@ class TaskManager extends ChangeNotifier {
     notifyListeners();
     return result;
   }
+
+  Future<Task> getTaskById(int id) async {
+    final db = await _database.database;
+    final result = await db.rawQuery('''
+  SELECT * FROM $_taskTable
+  WHERE $_taskTable.id = $id;
+''');
+    final listOFQuerieTuples =
+        result.isEmpty ? [] : result.map((e) => Task.fromJSON(e)).toList();
+    return listOFQuerieTuples[0];
+  }
 }

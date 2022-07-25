@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:todoapp/components/todo_path.dart';
 import 'package:todoapp/models/models.dart';
@@ -89,8 +90,7 @@ class _EditingScreenState extends State<EditingScreen> {
     return IconButton(
       padding: EdgeInsets.zero,
       icon: const Icon(Icons.arrow_back_ios_new, size: 25),
-      onPressed: () => Provider.of<AppStateManager>(context, listen: false)
-          .gotoEditingScreen(false),
+      onPressed: () => context.goNamed(TodoPages.home, params: {'tab': 'list'}),
       color: taskManager.getColor,
     );
   }
@@ -100,8 +100,7 @@ class _EditingScreenState extends State<EditingScreen> {
       onPressed: () {
         taskManager.deleteCurrentTask(widget.task);
         taskManager.setDefault();
-        Provider.of<AppStateManager>(context, listen: false)
-            .gotoEditingScreen(false);
+        context.goNamed(TodoPages.home, params: {'tab': 'list'});
       },
       icon: Icon(Icons.delete, size: 25, color: taskManager.getColor),
     );

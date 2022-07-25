@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:todoapp/components/component.dart';
-import 'package:todoapp/providers/app_state_manager.dart';
+import 'package:todoapp/components/todo_path.dart';
 import 'package:todoapp/providers/task_manager.dart';
 import '../models/models.dart';
 
@@ -46,8 +47,7 @@ class _ListScreenState extends State<ListScreen> {
           IconButton(
               onPressed: () {
                 Provider.of<TaskManager>(context, listen: false).setDefault();
-                Provider.of<AppStateManager>(context, listen: false)
-                    .gotoNoteScreen(true);
+                context.goNamed(TodoPages.item, params: {'tab': 'list'});
               },
               icon: const Icon(Icons.add))
         ],
@@ -85,7 +85,7 @@ class _ListScreenState extends State<ListScreen> {
                           direction: DismissDirection.endToStart,
                           onDismissed: (direction) =>
                               taskManager.deleteCurrentTask(task),
-                          child: buildCustomTaskCard(context, task),
+                          child: buildCustomTaskCard(context, task, index),
                         );
                       },
                       separatorBuilder: (context, index) =>
@@ -99,15 +99,19 @@ class _ListScreenState extends State<ListScreen> {
     );
   }
 
-  ClipRRect buildCustomTaskCard(BuildContext context, Task task) {
+  ClipRRect buildCustomTaskCard(BuildContext context, Task task, int index) {
     return ClipRRect(
       borderRadius: const BorderRadius.all(Radius.circular(20)),
       child: Material(
         child: InkWell(
           onTap: () {
             Provider.of<TaskManager>(context, listen: false).setTask(task);
-            Provider.of<AppStateManager>(context, listen: false)
-                .gotoEditingScreen(true);
+            context.goNamed(
+              TodoPages.editing,
+              params: {'tab': 'list'},
+              queryParams: {'id': '$index'},
+              extra: task,
+            );
           },
           child: TaskCard(task: task),
         ),
@@ -122,8 +126,7 @@ class _ListScreenState extends State<ListScreen> {
       child: InkWell(
         onTap: () {
           Provider.of<TaskManager>(context, listen: false).setDefault();
-          Provider.of<AppStateManager>(context, listen: false)
-              .gotoNoteScreen(true);
+          context.goNamed(TodoPages.item, params: {'tab': 'list'});
         },
         onLongPress: () async {
           await Provider.of<TaskManager>(context, listen: false)

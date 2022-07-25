@@ -1,29 +1,32 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AppStateManager extends ChangeNotifier {
-  bool _splashScreen = false;
+  SharedPreferences prefs;
+  AppStateManager(this.prefs);
+  bool splashScreen = false;
   bool _onBoardingScreen = false;
   bool _noteScreen = false;
   bool _editingScreen = false;
   int _selectedTab = 0;
 
-  bool get isSplashScreen => _splashScreen;
+  bool get isSplashScreen => splashScreen;
   bool get isOnboardingScreen => _onBoardingScreen;
   bool get isOnNoteScreen => _noteScreen;
   bool get isOnEditngScreen => _editingScreen;
   int get currentIndex => _selectedTab;
 
   void initializeApp() {
-    Timer(const Duration(milliseconds: 2000), () {
-      _splashScreen = true;
+    Timer(const Duration(seconds: 3), () {
+      splashScreen = true;
       notifyListeners();
     });
-    // _splashScreen = true;
   }
 
-  void isOnBoardingScreen() {
+  void isOnBoardingScreenDone() {
     _onBoardingScreen = true;
+    prefs.setBool('onboarding', true);
     notifyListeners();
   }
 
@@ -44,9 +47,13 @@ class AppStateManager extends ChangeNotifier {
 
   void logout() {
     _onBoardingScreen = false;
-    _splashScreen = false;
+    splashScreen = false;
     _selectedTab = 0;
     initializeApp();
     notifyListeners();
+  }
+
+  void checkFirstTime() {
+    _onBoardingScreen = prefs.getBool('onboarding') ?? false;
   }
 }

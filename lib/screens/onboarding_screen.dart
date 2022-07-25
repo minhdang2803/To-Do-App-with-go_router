@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:todoapp/components/todo_path.dart';
-import 'package:todoapp/providers/app_state_manager.dart';
+import 'package:todoapp/providers/providers.dart';
 import 'package:todoapp/theme.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({Key? key}) : super(key: key);
-  static MaterialPage page() {
+  static MaterialPage page(AppStateManager appStateManager) {
     return MaterialPage(
-        child: const OnboardingScreen(),
+        child: OnboardingScreen(),
         key: ValueKey(TodoPages.onboardingPath),
         name: TodoPages.onboardingPath);
   }
@@ -29,7 +30,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         leading: GestureDetector(
           child: const Icon(Icons.chevron_left, size: 35),
           onTap: () => setState(() {
-            Navigator.pop(context);
+            context.goNamed(TodoPages.splashPath);
           }),
         ),
         backgroundColor: Colors.transparent,
@@ -65,8 +66,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       children: [
         MaterialButton(
           onPressed: () {
-            Provider.of<AppStateManager>(context, listen: false)
-                .isOnBoardingScreen();
+            context.read<AppStateManager>().isOnBoardingScreenDone();
+            context.goNamed(TodoPages.home, params: {'tab': 'list'});
           },
           child: const Text(
             'Skip',

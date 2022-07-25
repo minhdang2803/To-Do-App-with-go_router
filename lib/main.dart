@@ -8,11 +8,22 @@ import 'package:todoapp/theme.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final prefs = await SharedPreferences.getInstance();
+  final listManager = TaskManager();
+  final appStateManager = AppStateManager(prefs);
   final todoThemeProvider =
       TodoThemeManager(isDarkMode: prefs.getBool('isDarkTheme') ?? false);
   runApp(
-    ChangeNotifierProvider(
-      create: (context) => todoThemeProvider,
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => listManager),
+        ChangeNotifierProvider(create: (context) => todoThemeProvider),
+        ChangeNotifierProvider(create: (context) => appStateManager),
+        ChangeNotifierProvider<AppRouter>(
+          lazy: false,
+          create: (BuildContext createContext) =>
+              AppRouter(appStateManager: appStateManager),
+        ),
+      ],
       child: const MyTodo(),
     ),
   );
@@ -26,41 +37,23 @@ class MyTodo extends StatefulWidget {
 }
 
 class _MyTodoState extends State<MyTodo> {
-  final ThemeData theme = TodoThemeManager.light();
-
-  final _listManager = TaskManager();
-
-  final _appStateManager = AppStateManager();
-
-  late AppRouter _appRouter;
-
   @override
   void initState() {
     super.initState();
-    _appRouter = AppRouter(
-      appStateManager: _appStateManager,
-      taskManager: _listManager,
-    );
   }
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (context) => _listManager),
-        ChangeNotifierProvider(create: (context) => _appStateManager),
-      ],
-      child: Consumer<TodoThemeManager>(
-        builder: ((context, value, child) => MaterialApp(
-              debugShowCheckedModeBanner: false,
-              theme: value.getTheme,
-              title: 'To Do App',
-              home: Router(
-                routerDelegate: _appRouter,
-                backButtonDispatcher: RootBackButtonDispatcher(),
-              ),
-            )),
-      ),
+    final router = Provider.of<AppRouter>(context, listen: false).router;
+    return Consumer<TodoThemeManager>(
+      builder: ((context, value, child) => MaterialApp.router(
+            debugShowCheckedModeBanner: false,
+            theme: value.getTheme,
+            title: 'To Do App',
+            routerDelegate: router.routerDelegate,
+            routeInformationParser: router.routeInformationParser,
+            routeInformationProvider: router.routeInformationProvider,
+          )),
     );
   }
 }

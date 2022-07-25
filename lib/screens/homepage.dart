@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:todoapp/components/todo_path.dart';
 import 'package:todoapp/providers/app_state_manager.dart';
@@ -10,8 +11,8 @@ class Homepage extends StatefulWidget {
   static MaterialPage page(int index) {
     return MaterialPage(
       child: Homepage(currentTab: index),
-      name: TodoPages.home,
-      key: ValueKey(TodoPages.home),
+      name: 'listing',
+      key: ValueKey('${TodoPages.home}?=$index'),
     );
   }
 
@@ -44,7 +45,17 @@ class _HomepageState extends State<Homepage> {
             ],
             currentIndex: widget.currentTab,
             selectedItemColor: Colors.purple.shade400,
-            onTap: (index) => appStateManager.goToTab(index),
+            onTap: (index) {
+              appStateManager.goToTab(index);
+              switch (index) {
+                case 0:
+                  context.goNamed(TodoPages.home, params: {'tab': 'list'});
+                  break;
+                case 1:
+                  context.goNamed(TodoPages.home, params: {'tab': 'setting'});
+                  break;
+              }
+            },
           ),
         );
       },
