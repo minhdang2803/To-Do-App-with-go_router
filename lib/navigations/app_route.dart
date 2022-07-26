@@ -3,7 +3,6 @@ import 'package:go_router/go_router.dart';
 import 'package:todoapp/components/todo_path.dart';
 import 'package:todoapp/providers/providers.dart';
 import 'package:todoapp/screens/screens.dart';
-
 import '../models/models.dart';
 
 class AppRouter extends ChangeNotifier {
@@ -16,12 +15,6 @@ class AppRouter extends ChangeNotifier {
       debugLogDiagnostics: true,
       urlPathStrategy: UrlPathStrategy.path,
       routes: [
-        // GoRoute(
-        //   path: TodoPages.root,
-        //   name: TodoPages.root,
-        //   redirect: (state) =>
-        //       state.namedLocation(TodoPages.home, params: {'tab': 'list'}),
-        // ),
         GoRoute(
           path: TodoPages.splashPath,
           name: TodoPages.splashPath,
@@ -32,7 +25,7 @@ class AppRouter extends ChangeNotifier {
             path: TodoPages.onboardingPath,
             name: TodoPages.onboardingPath,
             pageBuilder: (BuildContext context, GoRouterState state) =>
-                OnboardingScreen.page(appStateManager)),
+                OnboardingScreen.page()),
         GoRoute(
           path: '/home/:tab(list|setting)',
           name: TodoPages.home,
@@ -62,7 +55,6 @@ class AppRouter extends ChangeNotifier {
             child: ErrorPage(error: state.error),
           ),
       redirect: (state) {
-        String? location;
         if (state.subloc == '/' && !appStateManager.isSplashScreen) {
           appStateManager.initializeApp();
           return state.namedLocation(TodoPages.splashPath);

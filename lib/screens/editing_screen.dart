@@ -90,7 +90,7 @@ class _EditingScreenState extends State<EditingScreen> {
     return IconButton(
       padding: EdgeInsets.zero,
       icon: const Icon(Icons.arrow_back_ios_new, size: 25),
-      onPressed: () => context.goNamed(TodoPages.home, params: {'tab': 'list'}),
+      onPressed: () => context.pop(),
       color: taskManager.getColor,
     );
   }
@@ -100,7 +100,7 @@ class _EditingScreenState extends State<EditingScreen> {
       onPressed: () {
         taskManager.deleteCurrentTask(widget.task);
         taskManager.setDefault();
-        context.goNamed(TodoPages.home, params: {'tab': 'list'});
+        context.pop();
       },
       icon: Icon(Icons.delete, size: 25, color: taskManager.getColor),
     );

@@ -8,9 +8,9 @@ import 'package:todoapp/theme.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({Key? key}) : super(key: key);
-  static MaterialPage page(AppStateManager appStateManager) {
+  static MaterialPage page() {
     return MaterialPage(
-        child: OnboardingScreen(),
+        child: const OnboardingScreen(),
         key: ValueKey(TodoPages.onboardingPath),
         name: TodoPages.onboardingPath);
   }

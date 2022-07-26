@@ -187,7 +187,7 @@ class _AddingScreenState extends State<AddingScreen> {
       bottom: 25.0,
       right: 15.0,
       child: InkWell(
-        onTap: () => context.goNamed(TodoPages.home, params: {'tab': 'list'}),
+        onTap: () => context.pop(),
         child: Container(
           width: 60,
           height: 60,
