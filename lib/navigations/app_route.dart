@@ -27,28 +27,25 @@ class AppRouter extends ChangeNotifier {
             pageBuilder: (BuildContext context, GoRouterState state) =>
                 OnboardingScreen.page()),
         GoRoute(
-          path: '/home/:tab(list|setting)',
+          path: '/home',
           name: TodoPages.home,
           pageBuilder: (BuildContext context, GoRouterState state) {
-            final param = state.params['tab'];
-            int index = param == 'list' ? 0 : 1;
+            int index = int.parse(state.queryParams['tab']!);
             return Homepage.page(index);
           },
-          routes: [
-            GoRoute(
-                path: 'add',
-                name: TodoPages.item,
-                pageBuilder: (context, state) {
-                  return AddingScreen.page();
-                }),
-            GoRoute(
-                path: 'detail',
-                name: TodoPages.editing,
-                pageBuilder: (context, state) {
-                  return EditingScreen.page(state.extra! as Task);
-                }),
-          ],
-        )
+        ),
+        GoRoute(
+            path: '/home/add',
+            name: TodoPages.item,
+            pageBuilder: (context, state) {
+              return AddingScreen.page();
+            }),
+        GoRoute(
+            path: '/home/detail',
+            name: TodoPages.editing,
+            pageBuilder: (context, state) {
+              return EditingScreen.page(state.extra! as Task);
+            }),
       ],
       errorPageBuilder: (context, state) => MaterialPage<void>(
             key: state.pageKey,

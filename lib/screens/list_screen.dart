@@ -47,7 +47,7 @@ class _ListScreenState extends State<ListScreen> {
           IconButton(
               onPressed: () {
                 Provider.of<TaskManager>(context, listen: false).setDefault();
-                context.goNamed(TodoPages.item, params: {'tab': 'list'});
+                context.goNamed(TodoPages.item);
               },
               icon: const Icon(Icons.add))
         ],
@@ -108,8 +108,7 @@ class _ListScreenState extends State<ListScreen> {
             Provider.of<TaskManager>(context, listen: false).setTask(task);
             context.goNamed(
               TodoPages.editing,
-              params: {'tab': 'list'},
-              queryParams: {'id': '$index'},
+              queryParams: {'tab': 'list', 'id': '$index'},
               extra: task,
             );
           },
@@ -126,7 +125,7 @@ class _ListScreenState extends State<ListScreen> {
       child: InkWell(
         onTap: () {
           Provider.of<TaskManager>(context, listen: false).setDefault();
-          context.goNamed(TodoPages.item, params: {'tab': 'list'});
+          context.goNamed(TodoPages.item);
         },
         onLongPress: () async {
           await Provider.of<TaskManager>(context, listen: false)

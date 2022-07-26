@@ -49,10 +49,10 @@ class _HomepageState extends State<Homepage> {
               appStateManager.goToTab(index);
               switch (index) {
                 case 0:
-                  context.goNamed(TodoPages.home, params: {'tab': 'list'});
+                  context.goNamed(TodoPages.home, queryParams: {'tab': '0'});
                   break;
                 case 1:
-                  context.goNamed(TodoPages.home, params: {'tab': 'setting'});
+                  context.goNamed(TodoPages.home, queryParams: {'tab': '1'});
                   break;
               }
             },

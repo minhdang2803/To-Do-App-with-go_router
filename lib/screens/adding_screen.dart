@@ -61,7 +61,7 @@ class _AddingScreenState extends State<AddingScreen> {
                 );
                 // ignore: use_build_context_synchronously
                 Provider.of<TaskManager>(context, listen: false).setDefault();
-                context.goNamed(TodoPages.home, params: {'tab': 'list'});
+                context.goNamed(TodoPages.home, queryParams: {'tab': '0'});
               },
               icon: const Icon(Icons.check)),
           const SizedBox(width: 10),
@@ -187,7 +187,7 @@ class _AddingScreenState extends State<AddingScreen> {
       bottom: 25.0,
       right: 15.0,
       child: InkWell(
-        onTap: () => context.pop(),
+        onTap: () => context.goNamed(TodoPages.home, queryParams: {'tab': '0'}),
         child: Container(
           width: 60,
           height: 60,

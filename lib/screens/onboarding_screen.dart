@@ -67,7 +67,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         MaterialButton(
           onPressed: () {
             context.read<AppStateManager>().isOnBoardingScreenDone();
-            context.goNamed(TodoPages.home, params: {'tab': 'list'});
+            context.goNamed(TodoPages.home, queryParams: {'tab': '0'});
           },
           child: const Text(
             'Skip',
