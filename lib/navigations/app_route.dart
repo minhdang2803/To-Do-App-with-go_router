@@ -64,7 +64,7 @@ class AppRouter extends ChangeNotifier {
             state.subloc == TodoPages.splashPath) {
           appStateManager.checkFirstTime();
           if (appStateManager.isOnboardingScreen == true) {
-            return null;
+            return state.namedLocation(TodoPages.home, params: {'tab': 'list'});
           } else {
             return state.namedLocation(TodoPages.onboardingPath);
           }
